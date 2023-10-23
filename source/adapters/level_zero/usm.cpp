@@ -17,6 +17,7 @@
 #include "usm.hpp"
 
 #include "ur_level_zero.hpp"
+#include "logger/ur_logger.hpp"
 
 #include <umf_helpers.hpp>
 
@@ -574,7 +575,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urUSMGetMemAllocInfo(
       MemAllocaType = UR_USM_TYPE_SHARED;
       break;
     default:
-      urPrint("urUSMGetMemAllocInfo: unexpected usm memory type\n");
+      logger::debug("urUSMGetMemAllocInfo: unexpected usm memory type\n");
       return UR_RESULT_ERROR_INVALID_VALUE;
     }
     return ReturnValue(MemAllocaType);
@@ -598,7 +599,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urUSMGetMemAllocInfo(
     return ReturnValue(Size);
   }
   default:
-    urPrint("urUSMGetMemAllocInfo: unsupported ParamName\n");
+    logger::debug("urUSMGetMemAllocInfo: unsupported ParamName\n");
     return UR_RESULT_ERROR_INVALID_VALUE;
   }
   return UR_RESULT_SUCCESS;
@@ -764,7 +765,7 @@ ur_usm_pool_handle_t_::ur_usm_pool_handle_t_(ur_context_handle_t Context,
       break;
     }
     default: {
-      urPrint("urUSMPoolCreate: unexpected chained stype\n");
+      logger::debug("urUSMPoolCreate: unexpected chained stype\n");
       throw UsmAllocationException(UR_RESULT_ERROR_INVALID_ARGUMENT);
     }
     }
@@ -864,7 +865,7 @@ ur_result_t urUSMPoolGetInfo(
   std::ignore = PropSize;
   std::ignore = PropValue;
   std::ignore = PropSizeRet;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::debug("[UR][L0] %s function not implemented!\n", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 

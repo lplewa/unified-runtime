@@ -48,7 +48,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urPlatformGet(
   }
 
   if (getenv("SYCL_ENABLE_PCI") != nullptr) {
-    urPrint("WARNING: SYCL_ENABLE_PCI is deprecated and no longer needed.\n");
+    logger::debug("WARNING: SYCL_ENABLE_PCI is deprecated and no longer needed.\n");
   }
 
   // TODO: We can still safely recover if something goes wrong during the init.
@@ -69,7 +69,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urPlatformGet(
   }
 
   if (ZeResult != ZE_RESULT_SUCCESS) {
-    urPrint("zeInit: Level Zero initialization failure\n");
+    logger::debug("zeInit: Level Zero initialization failure\n");
     return ze2urResult(ZeResult);
   }
 
@@ -174,7 +174,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urPlatformGetInfo(
   case UR_PLATFORM_INFO_BACKEND:
     return ReturnValue(UR_PLATFORM_BACKEND_LEVEL_ZERO);
   default:
-    urPrint("urPlatformGetInfo: unrecognized ParamName\n");
+    logger::debug("urPlatformGetInfo: unrecognized ParamName\n");
     return UR_RESULT_ERROR_INVALID_VALUE;
   }
 

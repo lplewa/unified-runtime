@@ -10,6 +10,7 @@
 
 #include "common.hpp"
 #include "usm.hpp"
+#include "logger/ur_logger.hpp"
 
 ur_result_t ze2urResult(ze_result_t ZeResult) {
   if (ZeResult == ZE_RESULT_SUCCESS)
@@ -63,15 +64,6 @@ ur_result_t ze2urResult(ze_result_t ZeResult) {
   }
 }
 
-void urPrint(const char *Format, ...) {
-  if (UrL0Debug & UR_L0_DEBUG_BASIC) {
-    va_list Args;
-    va_start(Args, Format);
-    vfprintf(stderr, Format, Args);
-    va_end(Args);
-  }
-}
-
 usm::DisjointPoolAllConfigs DisjointPoolConfigInstance =
     InitializeDisjointPoolConfig();
 
@@ -84,7 +76,7 @@ bool setEnvVar(const char *name, const char *value) {
   int Res = setenv(name, value, 1);
 #endif
   if (Res != 0) {
-    urPrint("UR L0 Adapter was unable to set the environment variable: %s\n",
+    logger::debug("UR L0 Adapter was unable to set the environment variable: %s\n",
             name);
     return false;
   }
@@ -147,7 +139,7 @@ inline void zeParseError(ze_result_t ZeError, const char *&ErrorString) {
 
 ze_result_t ZeCall::doCall(ze_result_t ZeResult, const char *ZeName,
                            const char *ZeArgs, bool TraceError) {
-  urPrint("ZE ---> %s%s\n", ZeName, ZeArgs);
+  logger::debug("ZE ---> %s%s\n", ZeName, ZeArgs);
 
   if (UrL0Debug & UR_L0_DEBUG_CALL_COUNT) {
     ++(*ZeCallCount)[ZeName];
@@ -156,7 +148,7 @@ ze_result_t ZeCall::doCall(ze_result_t ZeResult, const char *ZeName,
   if (ZeResult && TraceError) {
     const char *ErrorString = "Unknown";
     zeParseError(ZeResult, ErrorString);
-    urPrint("Error (%s) in %s\n", ErrorString, ZeName);
+    logger::debug("Error (%s) in %s\n", ErrorString, ZeName);
   }
   return ZeResult;
 }

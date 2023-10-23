@@ -10,6 +10,7 @@
 
 #include "program.hpp"
 #include "ur_level_zero.hpp"
+#include "logger/ur_logger.hpp"
 
 extern "C" {
 // Check to see if a Level Zero module has any unresolved symbols.
@@ -329,7 +330,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urProgramLink(
         ZeModuleDesc.pBuildFlags = ZeExtModuleDesc.pBuildFlags[0];
         ZeModuleDesc.pConstants = ZeExtModuleDesc.pConstants[0];
       } else {
-        urPrint("urProgramLink: level_zero driver does not have static linking "
+        logger::debug("urProgramLink: level_zero driver does not have static linking "
                 "support.");
         return UR_RESULT_ERROR_INVALID_VALUE;
       }
@@ -674,7 +675,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urProgramGetBuildInfo(
     // program.
     return ReturnValue("");
   } else {
-    urPrint("urProgramGetBuildInfo: unsupported ParamName\n");
+    logger::debug("urProgramGetBuildInfo: unsupported ParamName\n");
     return UR_RESULT_ERROR_INVALID_VALUE;
   }
   return UR_RESULT_SUCCESS;
@@ -690,7 +691,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urProgramSetSpecializationConstant(
   std::ignore = SpecId;
   std::ignore = SpecSize;
   std::ignore = SpecValue;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::debug("[UR][L0] %s function not implemented!\n", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 

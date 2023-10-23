@@ -9,6 +9,7 @@
 //===----------------------------------------------------------------------===//
 #include "command_buffer.hpp"
 #include "ur_level_zero.hpp"
+#include "logger/ur_logger.hpp"
 
 /* Command-buffer Extension
 
@@ -182,13 +183,13 @@ ur_result_t calculateKernelWorkDimensions(
           --GroupSize[I];
         }
         if (GlobalWorkSize[I] / GroupSize[I] > UINT32_MAX) {
-          urPrint("urCommandBufferAppendKernelLaunchExp: can't find a WG size "
+          logger::debug("urCommandBufferAppendKernelLaunchExp: can't find a WG size "
                   "suitable for global work size > UINT32_MAX\n");
           return UR_RESULT_ERROR_INVALID_WORK_GROUP_SIZE;
         }
         WG[I] = GroupSize[I];
       }
-      urPrint(
+      logger::debug(
           "urCommandBufferAppendKernelLaunchExp: using computed WG size = {%d, "
           "%d, %d}\n",
           WG[0], WG[1], WG[2]);
@@ -219,28 +220,28 @@ ur_result_t calculateKernelWorkDimensions(
     break;
 
   default:
-    urPrint("urCommandBufferAppendKernelLaunchExp: unsupported work_dim\n");
+    logger::debug("urCommandBufferAppendKernelLaunchExp: unsupported work_dim\n");
     return UR_RESULT_ERROR_INVALID_VALUE;
   }
 
   // Error handling for non-uniform group size case
   if (GlobalWorkSize[0] !=
       size_t(ZeThreadGroupDimensions.groupCountX) * WG[0]) {
-    urPrint("urCommandBufferAppendKernelLaunchExp: invalid work_dim. The range "
+    logger::debug("urCommandBufferAppendKernelLaunchExp: invalid work_dim. The range "
             "is not a "
             "multiple of the group size in the 1st dimension\n");
     return UR_RESULT_ERROR_INVALID_WORK_GROUP_SIZE;
   }
   if (GlobalWorkSize[1] !=
       size_t(ZeThreadGroupDimensions.groupCountY) * WG[1]) {
-    urPrint("urCommandBufferAppendKernelLaunchExp: invalid work_dim. The range "
+    logger::debug("urCommandBufferAppendKernelLaunchExp: invalid work_dim. The range "
             "is not a "
             "multiple of the group size in the 2nd dimension\n");
     return UR_RESULT_ERROR_INVALID_WORK_GROUP_SIZE;
   }
   if (GlobalWorkSize[2] !=
       size_t(ZeThreadGroupDimensions.groupCountZ) * WG[2]) {
-    urPrint("urCommandBufferAppendKernelLaunchExp: invalid work_dim. The range "
+    logger::debug("urCommandBufferAppendKernelLaunchExp: invalid work_dim. The range "
             "is not a "
             "multiple of the group size in the 3rd dimension\n");
     return UR_RESULT_ERROR_INVALID_WORK_GROUP_SIZE;
@@ -306,7 +307,7 @@ static ur_result_t enqueueCommandBufferMemCopyHelper(
              (CommandBuffer->ZeCommandList, Dst, Src, Size,
               LaunchEvent->ZeEvent, ZeEventList.size(), ZeEventList.data()));
 
-  urPrint("calling zeCommandListAppendMemoryCopy() with"
+  logger::debug("calling zeCommandListAppendMemoryCopy() with"
           "  ZeEvent %#" PRIxPTR "\n",
           ur_cast<std::uintptr_t>(LaunchEvent->ZeEvent));
 
@@ -372,7 +373,7 @@ static ur_result_t enqueueCommandBufferMemCopyRectHelper(
               DstSlicePitch, Src, &ZeSrcRegion, SrcPitch, SrcSlicePitch,
               LaunchEvent->ZeEvent, ZeEventList.size(), ZeEventList.data()));
 
-  urPrint("calling zeCommandListAppendMemoryCopyRegion() with"
+  logger::debug("calling zeCommandListAppendMemoryCopyRegion() with"
           "  ZeEvent %#" PRIxPTR "\n",
           ur_cast<std::uintptr_t>(LaunchEvent->ZeEvent));
 
@@ -483,7 +484,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urCommandBufferAppendKernelLaunchExp(
   if (GlobalWorkOffset != NULL) {
     if (!CommandBuffer->Context->getPlatform()
              ->ZeDriverGlobalOffsetExtensionFound) {
-      urPrint("No global offset extension found on this driver\n");
+      logger::debug("No global offset extension found on this driver\n");
       return UR_RESULT_ERROR_INVALID_VALUE;
     }
 
@@ -538,7 +539,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urCommandBufferAppendKernelLaunchExp(
               &ZeThreadGroupDimensions, LaunchEvent->ZeEvent,
               ZeEventList.size(), ZeEventList.data()));
 
-  urPrint("calling zeCommandListAppendLaunchKernel() with"
+  logger::debug("calling zeCommandListAppendLaunchKernel() with"
           "  ZeEvent %#" PRIxPTR "\n",
           ur_cast<std::uintptr_t>(LaunchEvent->ZeEvent));
 

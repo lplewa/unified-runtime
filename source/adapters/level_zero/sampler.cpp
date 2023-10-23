@@ -10,6 +10,7 @@
 
 #include "sampler.hpp"
 #include "ur_level_zero.hpp"
+#include "logger/ur_logger.hpp"
 
 UR_APIEXPORT ur_result_t UR_APICALL urSamplerCreate(
     ur_context_handle_t Context, ///< [in] handle of the context object
@@ -75,7 +76,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urSamplerCreate(
       ZeSamplerDesc.addressMode = ZE_SAMPLER_ADDRESS_MODE_MIRROR;
       break;
     default:
-      urPrint("urSamplerCreate: unsupported "
+      logger::debug("urSamplerCreate: unsupported "
               "UR_SAMPLER_PROPERTIES_ADDRESSING_MODEE "
               "value\n");
       return UR_RESULT_ERROR_INVALID_VALUE;
@@ -86,7 +87,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urSamplerCreate(
     else if (Props->filterMode == UR_SAMPLER_FILTER_MODE_LINEAR)
       ZeSamplerDesc.filterMode = ZE_SAMPLER_FILTER_MODE_LINEAR;
     else {
-      urPrint("urSamplerCreate: unsupported UR_SAMPLER_FILTER_MODE value\n");
+      logger::debug("urSamplerCreate: unsupported UR_SAMPLER_FILTER_MODE value\n");
       return UR_RESULT_ERROR_INVALID_VALUE;
     }
   }
@@ -144,7 +145,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urSamplerGetInfo(
   std::ignore = PropValueSize;
   std::ignore = PropValue;
   std::ignore = PropSizeRet;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::debug("[UR][L0] %s function not implemented!\n", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -155,7 +156,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urSamplerGetNativeHandle(
 ) {
   std::ignore = Sampler;
   std::ignore = NativeSampler;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::debug("[UR][L0] %s function not implemented!\n", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -173,6 +174,6 @@ UR_APIEXPORT ur_result_t UR_APICALL urSamplerCreateWithNativeHandle(
   std::ignore = Context;
   std::ignore = Properties;
   std::ignore = Sampler;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::debug("[UR][L0] %s function not implemented!\n", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }

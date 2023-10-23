@@ -16,16 +16,17 @@
 #include "common.hpp"
 #include "event.hpp"
 #include "ur_level_zero.hpp"
+#include "logger/ur_logger.hpp"
 
 void printZeEventList(const _ur_ze_event_list_t &UrZeEventList) {
   if (UrL0Debug & UR_L0_DEBUG_BASIC) {
-    urPrint("  NumEventsInWaitList %d:", UrZeEventList.Length);
+    logger::debug("  NumEventsInWaitList %d:", UrZeEventList.Length);
 
     for (uint32_t I = 0; I < UrZeEventList.Length; I++) {
-      urPrint(" %#llx", ur_cast<std::uintptr_t>(UrZeEventList.ZeEventList[I]));
+      logger::debug(" %#llx", ur_cast<std::uintptr_t>(UrZeEventList.ZeEventList[I]));
     }
 
-    urPrint("\n");
+    logger::debug("\n");
   }
 }
 
@@ -428,7 +429,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urEventGetInfo(
     return ReturnValue(Event->RefCount.load());
   }
   default:
-    urPrint("Unsupported ParamName in urEventGetInfo: ParamName=%d(%x)\n",
+    logger::debug("Unsupported ParamName in urEventGetInfo: ParamName=%d(%x)\n",
             PropName, PropName);
     return UR_RESULT_ERROR_INVALID_VALUE;
   }
@@ -498,7 +499,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urEventGetProfilingInfo(
     //
     return ReturnValue(uint64_t{0});
   default:
-    urPrint("urEventGetProfilingInfo: not supported ParamName\n");
+    logger::debug("urEventGetProfilingInfo: not supported ParamName\n");
     return UR_RESULT_ERROR_INVALID_VALUE;
   }
 
@@ -594,7 +595,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urEventWait(
             die("The host-visible proxy event missing");
 
           ze_event_handle_t ZeEvent = HostVisibleEvent->ZeEvent;
-          urPrint("ZeEvent = %#llx\n", ur_cast<std::uintptr_t>(ZeEvent));
+          logger::debug("ZeEvent = %#llx\n", ur_cast<std::uintptr_t>(ZeEvent));
           ZE2UR_CALL(zeHostSynchronize, (ZeEvent));
           Event->Completed = true;
         }
@@ -742,7 +743,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urEventSetCallback(
   std::ignore = ExecStatus;
   std::ignore = Notify;
   std::ignore = UserData;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::debug("[UR][L0] %s function not implemented!\n", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
