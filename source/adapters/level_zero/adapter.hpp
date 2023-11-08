@@ -8,12 +8,14 @@
 //
 //===----------------------------------------------------------------------===//
 
+#include "logger/ur_logger.hpp"
 #include <atomic>
 #include <mutex>
 
 struct ur_adapter_handle_t_ {
   std::atomic<uint32_t> RefCount = 0;
   std::mutex Mutex;
+  logger::Logger &logger = logger::get_logger("level_zero");
 };
 
 extern ur_adapter_handle_t_ Adapter;

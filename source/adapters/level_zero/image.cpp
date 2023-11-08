@@ -10,6 +10,7 @@
 
 #include "image.hpp"
 #include "common.hpp"
+#include "logger/ur_logger.hpp"
 
 UR_APIEXPORT ur_result_t UR_APICALL urUSMPitchedAllocExp(
     ur_context_handle_t hContext, ur_device_handle_t hDevice,
@@ -25,7 +26,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urUSMPitchedAllocExp(
   std::ignore = elementSizeBytes;
   std::ignore = ppMem;
   std::ignore = pResultPitch;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -36,7 +37,7 @@ urBindlessImagesUnsampledImageHandleDestroyExp(ur_context_handle_t hContext,
   std::ignore = hContext;
   std::ignore = hDevice;
   std::ignore = hImage;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -47,7 +48,7 @@ urBindlessImagesSampledImageHandleDestroyExp(ur_context_handle_t hContext,
   std::ignore = hContext;
   std::ignore = hDevice;
   std::ignore = hImage;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -60,7 +61,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesImageAllocateExp(
   std::ignore = pImageFormat;
   std::ignore = pImageDesc;
   std::ignore = phImageMem;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -70,7 +71,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesImageFreeExp(
   std::ignore = hContext;
   std::ignore = hDevice;
   std::ignore = hImageMem;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -86,7 +87,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesUnsampledImageCreateExp(
   std::ignore = pImageDesc;
   std::ignore = phMem;
   std::ignore = phImage;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -103,7 +104,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesSampledImageCreateExp(
   std::ignore = hSampler;
   std::ignore = phMem;
   std::ignore = phImage;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -127,7 +128,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesImageCopyExp(
   std::ignore = numEventsInWaitList;
   std::ignore = phEventWaitList;
   std::ignore = phEvent;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -138,7 +139,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesImageGetInfoExp(
   std::ignore = propName;
   std::ignore = pPropValue;
   std::ignore = pPropSizeRet;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -151,7 +152,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesMipmapGetLevelExp(
   std::ignore = hImageMem;
   std::ignore = mipmapLevel;
   std::ignore = phImageMem;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -161,7 +162,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesMipmapFreeExp(
   std::ignore = hContext;
   std::ignore = hDevice;
   std::ignore = hMem;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -174,7 +175,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesImportOpaqueFDExp(
   std::ignore = size;
   std::ignore = pInteropMemDesc;
   std::ignore = phInteropMem;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -189,7 +190,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesMapExternalArrayExp(
   std::ignore = pImageDesc;
   std::ignore = hInteropMem;
   std::ignore = phImageMem;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -199,7 +200,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesReleaseInteropExp(
   std::ignore = hContext;
   std::ignore = hDevice;
   std::ignore = hInteropMem;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -212,7 +213,7 @@ urBindlessImagesImportExternalSemaphoreOpaqueFDExp(
   std::ignore = hDevice;
   std::ignore = pInteropSemaphoreDesc;
   std::ignore = phInteropSemaphoreHandle;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -222,7 +223,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesDestroyExternalSemaphoreExp(
   std::ignore = hContext;
   std::ignore = hDevice;
   std::ignore = hInteropSemaphore;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -235,7 +236,7 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesWaitExternalSemaphoreExp(
   std::ignore = numEventsInWaitList;
   std::ignore = phEventWaitList;
   std::ignore = phEvent;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 
@@ -248,6 +249,6 @@ UR_APIEXPORT ur_result_t UR_APICALL urBindlessImagesSignalExternalSemaphoreExp(
   std::ignore = numEventsInWaitList;
   std::ignore = phEventWaitList;
   std::ignore = phEvent;
-  urPrint("[UR][L0] %s function not implemented!\n", __FUNCTION__);
+  logger::error("{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
