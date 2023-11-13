@@ -68,9 +68,9 @@ ur_result_t adapterStateTeardown() {
     //
     // clang-format on
 
-    fprintf(stderr, "Check balance of create/destroy calls\n");
-    fprintf(stderr,
-            "----------------------------------------------------------\n");
+    logger::debug("Check balance of create/destroy calls");
+    logger::debug("----------------------------------------------------------");
+    std::stringstream ss;
     for (const auto &Row : CreateDestroySet) {
       int diff = 0;
       for (auto I = Row.begin(); I != Row.end();) {
@@ -81,23 +81,26 @@ ur_result_t adapterStateTeardown() {
         bool Last = (++I == Row.end());
 
         if (Last) {
-          fprintf(stderr, " \\--->");
+          ss << " \\--->";
           diff -= ZeCount;
         } else {
           diff += ZeCount;
           if (!First) {
-            fprintf(stderr, " | \n");
+            ss << " | ";
+            logger::debug(ss.str().c_str());
+            ss.clear();
           }
         }
 
-        fprintf(stderr, "%30s = %-5d", ZeName, ZeCount);
+        ss << ZeName << " = " << ZeCount;
       }
 
       if (diff) {
         LeakFound = true;
-        fprintf(stderr, " ---> LEAK = %d", diff);
+        ss << " ---> LEAK = " << diff;
       }
-      fprintf(stderr, "\n");
+      logger::debug(ss.str().c_str());
+      ss.clear();
     }
 
     ZeCallCount->clear();

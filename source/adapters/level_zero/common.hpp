@@ -174,10 +174,10 @@ static auto getUrResultString = [](ur_result_t Result) {
 #define UR_CALL(Call)                                                          \
   {                                                                            \
     if (PrintTrace)                                                            \
-      fprintf(stderr, "UR ---> %s\n", #Call);                                  \
+      logger::debug("UR ---> {}", #Call);                                      \
     ur_result_t Result = (Call);                                               \
     if (PrintTrace)                                                            \
-      fprintf(stderr, "UR <--- %s(%s)\n", #Call, getUrResultString(Result));   \
+      logger::debug("UR <--- {}({})", #Call, getUrResultString(Result));       \
     if (Result != UR_RESULT_SUCCESS)                                           \
       return Result;                                                           \
   }
@@ -288,10 +288,10 @@ template <class T> struct ZesStruct : public T {
 #define UR_CALL(Call)                                                          \
   {                                                                            \
     if (PrintTrace)                                                            \
-      fprintf(stderr, "UR ---> %s\n", #Call);                                  \
+      logger::debug("UR ---> {}", #Call);                                      \
     ur_result_t Result = (Call);                                               \
     if (PrintTrace)                                                            \
-      fprintf(stderr, "UR <--- %s(%s)\n", #Call, getUrResultString(Result));   \
+      logger::debug("UR <--- {}({})", #Call, getUrResultString(Result));       \
     if (Result != UR_RESULT_SUCCESS)                                           \
       return Result;                                                           \
   }
