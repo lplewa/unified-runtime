@@ -8,9 +8,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-#include <ur_api.h>
-
 #include "common.hpp"
+#include "logger/ur_logger.hpp"
+#include <ur_api.h>
 
 void enableCUDATracing();
 void disableCUDATracing();
@@ -18,6 +18,7 @@ void disableCUDATracing();
 struct ur_adapter_handle_t_ {
   std::atomic<uint32_t> RefCount = 0;
   std::mutex Mutex;
+  logger::Logger &logger = logger::get_logger("cuda");
 };
 
 ur_adapter_handle_t_ adapter{};

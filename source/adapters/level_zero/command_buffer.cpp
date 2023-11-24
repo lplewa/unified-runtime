@@ -419,9 +419,9 @@ static ur_result_t enqueueCommandBufferFillHelper(
              (CommandBuffer->ZeCommandList, Ptr, Pattern, PatternSize, Size,
               LaunchEvent->ZeEvent, ZeEventList.size(), ZeEventList.data()));
 
-  urPrint("calling zeCommandListAppendMemoryFill() with"
-          "  ZeEvent %#lx\n",
-          ur_cast<std::uintptr_t>(LaunchEvent->ZeEvent));
+  logger::debug("calling zeCommandListAppendMemoryFill() with"
+                "  ZeEvent {}",
+                ur_cast<std::uintptr_t>(LaunchEvent->ZeEvent));
 
   return UR_RESULT_SUCCESS;
 }

@@ -9,6 +9,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "common.hpp"
+#include "logger/ur_logger.hpp"
 
 #include <cuda.h>
 
@@ -37,29 +38,34 @@ ur_result_t mapErrorUR(CUresult Result) {
 
 void checkErrorUR(CUresult Result, const char *Function, int Line,
                   const char *File) {
+  static bool suppress_error =
+      std::getenv("SYCL_PI_SUPPRESS_ERROR_MESSAGE") == nullptr &&
+      std::getenv("UR_SUPPRESS_ERROR_MESSAGE") == nullptr;
+
+  static bool abort = std::getenv("PI_CUDA_ABORT") != nullptr ||
+                      std::getenv("UR_CUDA_ABORT") != nullptr;
+
   if (Result == CUDA_SUCCESS || Result == CUDA_ERROR_DEINITIALIZED) {
     return;
   }
 
-  if (std::getenv("SYCL_PI_SUPPRESS_ERROR_MESSAGE") == nullptr &&
-      std::getenv("UR_SUPPRESS_ERROR_MESSAGE") == nullptr) {
+  if (suppress_error) {
     const char *ErrorString = nullptr;
     const char *ErrorName = nullptr;
     cuGetErrorName(Result, &ErrorName);
     cuGetErrorString(Result, &ErrorString);
     std::stringstream SS;
-    SS << "\nUR CUDA ERROR:"
-       << "\n\tValue:           " << Result
-       << "\n\tName:            " << ErrorName
-       << "\n\tDescription:     " << ErrorString
-       << "\n\tFunction:        " << Function << "\n\tSource Location: " << File
-       << ":" << Line << "\n"
-       << std::endl;
-    std::cerr << SS.str();
+    SS << std::endl
+       << "CUDA Error" << std::endl
+       << "\tValue:           " << Result << std::endl
+       << "\tName:            " << ErrorName << std::endl
+       << "\tDescription:     " << ErrorString << std::endl
+       << "\tFunction:        " << Function << std::endl
+       << "\tSource Location: " << File << ":" << Line << std::endl;
+    logger::error("{}", SS.str());
   }
 
-  if (std::getenv("PI_CUDA_ABORT") != nullptr ||
-      std::getenv("UR_CUDA_ABORT") != nullptr) {
+  if (abort) {
     std::abort();
   }
 
@@ -68,22 +74,28 @@ void checkErrorUR(CUresult Result, const char *Function, int Line,
 
 void checkErrorUR(ur_result_t Result, const char *Function, int Line,
                   const char *File) {
+  static bool suppress_error =
+      std::getenv("SYCL_PI_SUPPRESS_ERROR_MESSAGE") == nullptr &&
+      std::getenv("UR_SUPPRESS_ERROR_MESSAGE") == nullptr;
+
+  static bool abort = std::getenv("PI_CUDA_ABORT") != nullptr ||
+                      std::getenv("UR_CUDA_ABORT") != nullptr;
+
   if (Result == UR_RESULT_SUCCESS) {
     return;
   }
 
-  if (std::getenv("SYCL_PI_SUPPRESS_ERROR_MESSAGE") == nullptr &&
-      std::getenv("UR_SUPPRESS_ERROR_MESSAGE") == nullptr) {
+  if (suppress_error) {
     std::stringstream SS;
-    SS << "\nUR ERROR:"
-       << "\n\tValue:           " << Result
-       << "\n\tFunction:        " << Function << "\n\tSource Location: " << File
-       << ":" << Line << "\n"
-       << std::endl;
-    std::cerr << SS.str();
+    SS << std::endl
+       << "UR ERROR:" << std::endl
+       << "\tValue:           " << Result << std::endl
+       << "\tFunction:        " << Function << std::endl
+       << "\tSource Location: " << File << ":" << Line << std::endl;
+    logger::error("{}", SS.str());
   }
 
-  if (std::getenv("PI_CUDA_ABORT") != nullptr) {
+  if (abort) {
     std::abort();
   }
 
@@ -101,17 +113,13 @@ std::string getCudaVersionString() {
 }
 
 void detail::ur::die(const char *Message) {
-  std::cerr << "ur_die: " << Message << std::endl;
+  logger::error("{}", Message);
   std::terminate();
 }
 
 void detail::ur::assertion(bool Condition, const char *Message) {
   if (!Condition)
     die(Message);
-}
-
-void detail::ur::cuPrint(const char *Message) {
-  std::cerr << "ur_print: " << Message << std::endl;
 }
 
 // Global variables for ZER_EXT_RESULT_ADAPTER_SPECIFIC_ERROR

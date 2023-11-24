@@ -52,9 +52,6 @@ namespace ur {
 //
 [[noreturn]] void die(const char *Message);
 
-// Reports error messages
-void cuPrint(const char *Message);
-
 void assertion(bool Condition, const char *Message = nullptr);
 
 } // namespace ur
