@@ -43,6 +43,31 @@ inline void error(const char *format, Args &&...args) {
     get_logger().log(logger::Level::ERR, format, std::forward<Args>(args)...);
 }
 
+template <typename... Args>
+inline void debug(logger::legacyPrefix p, const char *format, Args &&...args) {
+    get_logger().log(p, logger::Level::DEBUG, format,
+                     std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+inline void info(logger::legacyPrefix p, const char *format, Args &&...args) {
+    get_logger().log(p, logger::Level::INFO, format,
+                     std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+inline void warning(logger::legacyPrefix p, const char *format,
+                    Args &&...args) {
+    get_logger().log(p, logger::Level::WARN, format,
+                     std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+inline void error(logger::legacyPrefix p, const char *format, Args &&...args) {
+    get_logger().log(p, logger::Level::ERR, format,
+                     std::forward<Args>(args)...);
+}
+
 inline void setLevel(logger::Level level) { get_logger().setLevel(level); }
 
 inline void setFlushLevel(logger::Level level) {

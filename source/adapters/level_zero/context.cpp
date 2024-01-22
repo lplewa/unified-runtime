@@ -175,7 +175,8 @@ UR_APIEXPORT ur_result_t UR_APICALL urContextSetExtendedDeleter(
   std::ignore = Context;
   std::ignore = Deleter;
   std::ignore = UserData;
-  logger::error("{} function not implemented!", __FUNCTION__);
+  logger::error(logger::legacyPrefix("[UR][L0] "),
+                "{} function not implemented!", __FUNCTION__);
   return UR_RESULT_ERROR_UNSUPPORTED_FEATURE;
 }
 

@@ -11,6 +11,12 @@
 
 namespace logger {
 
+struct legacyPrefix {
+    legacyPrefix() : prefix(""){};
+    legacyPrefix(std::string p) : prefix(p){};
+    std::string prefix;
+};
+
 class Logger {
   public:
     Logger(std::unique_ptr<logger::Sink> sink) : sink(std::move(sink)) {
@@ -52,7 +58,34 @@ class Logger {
     }
 
     template <typename... Args>
+    void debug(logger::legacyPrefix p, const char *format, Args &&...args) {
+        log(p, logger::Level::DEBUG, format, std::forward<Args>(args)...);
+    }
+
+    template <typename... Args>
+    void info(logger::legacyPrefix p, const char *format, Args &&...args) {
+        log(p, logger::Level::INFO, format, std::forward<Args>(args)...);
+    }
+
+    template <typename... Args>
+    void warning(logger::legacyPrefix p, const char *format, Args &&...args) {
+        log(p, logger::Level::WARN, format, std::forward<Args>(args)...);
+    }
+
+    template <typename... Args>
+    void error(logger::legacyPrefix p, const char *format, Args &&...args) {
+        log(p, logger::Level::ERR, format, std::forward<Args>(args)...);
+    }
+
+    template <typename... Args>
     void log(logger::Level level, const char *format, Args &&...args) {
+        log(logger::legacyPrefix(), level, format, std::forward<Args>(args)...);
+    }
+
+    template <typename... Args>
+    void log(logger::legacyPrefix p, logger::Level level, const char *format,
+             Args &&...args) {
+        (void)p;
         if (level < this->level) {
             return;
         }
